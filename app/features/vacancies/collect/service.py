@@ -1,13 +1,17 @@
+import asyncio
+
+from app.core.config import HHSettings
 from app.hh.applicant.vacancy.view.schemas import \
     QueryParameters as ViewQueryParameters
 from app.hh.applicant.vacancy.view.service import Service as ViewService
 from app.hh.public.vacancies.search.schemas import \
     QueryParameters as SearchQueryParameters
 from app.hh.public.vacancies.search.service import Service as SearchService
+from app.hh.rps_limiter import RPSLimiter
 
 from .repository import Repository
 
-# TODO: limit rps
+
 class Service:
     
     
@@ -15,11 +19,12 @@ class Service:
         self.repo = repo
         self.view_service = view_service
         self.search_service = search_service
+        self.rps_limiter = RPSLimiter()
     
     
     async def collect_pages(self, limit: int, search_query_parameters: SearchQueryParameters):
         pages = []
-        search_result = await self.search_service.search(query_parameters=search_query_parameters)
+        search_result = await self.rps_limiter.request(self.search_service.search, query_parameters=search_query_parameters)
         per_page = search_result["per_page"]
         found = search_result["found"]
         vacancies_to_collect = found if found < limit else limit
@@ -27,7 +32,7 @@ class Service:
         
         for page in range(pages_to_collect):
             search_query_parameters.page = page
-            result = await self.search_service.search(query_parameters=search_query_parameters)
+            result = await self.rps_limiter.request(self.search_service.search, query_parameters=search_query_parameters)
             pages.append(result)
             
         return pages
@@ -49,8 +54,7 @@ class Service:
         vacancy_ids = await self.get_vacancy_ids(limit=limit, pages=pages)
         
         for vacancy_id in vacancy_ids:
-            vacancy = await self.view_service.view(vacancy_id=vacancy_id, 
-                                                   query_parameters=view_query_parameters)
+            vacancy = await self.rps_limiter.request(self.view_service.view, vacancy_id=vacancy_id, query_parameters=view_query_parameters)
             vacancies.append(vacancy)
             
         return vacancies

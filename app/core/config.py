@@ -27,6 +27,7 @@ class HHSettings(BaseSettings):
     AUTHORIZATION_PATTERN: str
     APP_NAME: str
     EMAIL: str
+    RPS: int
     
     
     @property
