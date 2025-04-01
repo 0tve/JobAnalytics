@@ -42,14 +42,18 @@ class Response(BaseModel):
     employer: Optional["Employer"] = None
     employment_form: Optional["EmploymentForm"] = None
     experience: Optional["Experience"] = None
-    fly_in_fly_out_duration: Optional["FlyInFlyOutDuration"] = None
+    
+    # TODO: accept list - maybe incorrect
+    fly_in_fly_out_duration: Optional["FlyInFlyOutDuration"] | list = None
     has_test: bool
     id: str
     initial_created_at: str
     insider_interview: Optional["InsiderInterview"] = None
     internship: bool | None = None
     key_skills: list["KeySkill"]
-    languages: Optional["Language"] = None
+    
+    # TODO: accept list - maybe incorrect
+    languages: Optional["Language"] | list = None
     name: str
     negotiations_url: str | None = None
     night_shifts: bool | None = None

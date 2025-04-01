@@ -17,9 +17,9 @@ class Service:
         self.header_parameters = HeaderParameters().model_dump()
         
     
-    async def view(self, 
-                   vacancy_id: str,
-                   query_parameters: dict):
+    def view(self, 
+             vacancy_id: str,
+             query_parameters: dict):
         url = f"{hh.VACANCIES_URL}{vacancy_id}"
         response = requests.get(
             url=url,

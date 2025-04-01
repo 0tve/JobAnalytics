@@ -9,12 +9,10 @@ hh = HHSettings()
 
 class RPSLimiter:
     
-    
     def __init__(self):
         self.semaphore = asyncio.Semaphore(hh.RPS)
         self.last_request_time = datetime.now()
         self.interval = timedelta(seconds=(1 / hh.RPS))
-        
         
     async def request(self, func: Callable, *args, **kwargs):
         

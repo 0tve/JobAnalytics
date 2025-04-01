@@ -32,7 +32,7 @@ class HHSettings(BaseSettings):
     
     @property
     def VACANCIES_URL(self):
-        return f"{self.BASE_URL}/vacancies/"
+        return f"{self.BASE_URL}vacancies/"
     
     
     @property
@@ -47,3 +47,20 @@ class HHSettings(BaseSettings):
     
     class Config:
         env_file = "envs/hh.env"
+        
+        
+class AppSettings(BaseSettings):
+    BASE_URL: str
+    
+    @property
+    def SEARCH_URL(self):
+        return f"{self.BASE_URL}hh/public/vacancies/search/"
+    
+    
+    @property
+    def VIEW_URL(self):
+        return f"{self.BASE_URL}hh/applicant/vacancy/view/"
+    
+    
+    class Config:
+        env_file = "envs/app.env"

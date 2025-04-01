@@ -1,9 +1,11 @@
-from app.hh.applicant.vacancy.view.service import Service as ViewService
-from app.hh.public.vacancies.search.service import Service as SearchService
+from fastapi import Depends
+from httpx import AsyncClient
+
+from app.core.http_client import get_http_client
 
 from .repository import Repository
 from .service import Service
 
 
-def get_service():
-    return Service(Repository, ViewService(Repository), SearchService(Repository))
+def get_service(http_client: AsyncClient = Depends(get_http_client)):
+    return Service(Repository, http_client)

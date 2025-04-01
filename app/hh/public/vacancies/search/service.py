@@ -17,8 +17,8 @@ class Service:
         self.header_parameters = HeaderParameters().model_dump()
         
     
-    async def search(self, 
-                     query_parameters: dict):
+    def search(self, 
+               query_parameters: dict):
         url = f"{hh.VACANCIES_URL}"
         response = requests.get(
             url=url,

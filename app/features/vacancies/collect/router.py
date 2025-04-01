@@ -12,4 +12,4 @@ router = APIRouter(prefix="/collect")
 async def collect(service: Service = Depends(get_service),
                   limit: int = Query(default=2000, ge=1, le=2000),
                   search_query_parameters: SearchQueryParameters = Depends()):
-    return await service.collect(limit=limit, search_query_parameters=search_query_parameters)
+    return await service.collect(limit=limit, search_query_parameters=search_query_parameters.model_dump(exclude_none=True))
