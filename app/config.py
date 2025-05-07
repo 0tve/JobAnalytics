@@ -7,8 +7,6 @@ class DatabaseSettings(BaseSettings):
     HOST: str
     PORT: int
     NAME: str
-    SCHEMAS: list[str]
-
 
     @property
     def DATABASE_URL(self):
@@ -16,7 +14,7 @@ class DatabaseSettings(BaseSettings):
 
 
     class Config:
-        env_file = "envs/database.env"
+        env_file = "envs/db.env"
         
         
 class HHSettings(BaseSettings):
@@ -27,40 +25,20 @@ class HHSettings(BaseSettings):
     AUTHORIZATION_PATTERN: str
     APP_NAME: str
     EMAIL: str
-    RPS: int
-    
+    RPS: int  
     
     @property
     def VACANCIES_URL(self):
-        return f"{self.BASE_URL}vacancies/"
-    
+        return f"{self.BASE_URL}/vacancies"
     
     @property
     def USER_AGENT(self):
         return f"{self.APP_NAME} ({self.EMAIL})"
     
-    
     @property
     def AUTHORIZATION(self):
         return f"Bearer {self.ACCESS_TOKEN}"
-    
+
     
     class Config:
         env_file = "envs/hh.env"
-        
-        
-class AppSettings(BaseSettings):
-    BASE_URL: str
-    
-    @property
-    def SEARCH_URL(self):
-        return f"{self.BASE_URL}hh/public/vacancies/search/"
-    
-    
-    @property
-    def VIEW_URL(self):
-        return f"{self.BASE_URL}hh/applicant/vacancy/view/"
-    
-    
-    class Config:
-        env_file = "envs/app.env"

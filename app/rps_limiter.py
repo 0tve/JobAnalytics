@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime, timedelta
 from typing import Callable
 
-from app.core.config import HHSettings
+from app.config import HHSettings
 
 hh = HHSettings()
 
